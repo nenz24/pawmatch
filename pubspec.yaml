@@ -38,6 +38,8 @@ dependencies:
   introduction_screen: ^3.1.17
   lottie: ^3.3.1
   another_flutter_splash_screen: ^1.2.1
+  flutter_svg: ^2.2.0
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:

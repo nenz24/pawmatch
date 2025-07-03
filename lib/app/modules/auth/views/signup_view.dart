@@ -8,7 +8,7 @@ class SignupView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SignupView'),
+        title: const Text('Sign Up'),
         centerTitle: true,
       ),
       body: const Center(

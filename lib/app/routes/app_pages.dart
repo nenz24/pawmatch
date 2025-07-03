@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:pawmatch/app/modules/auth/views/signin_view.dart';
 import 'package:pawmatch/app/modules/onboarding/views/splash_screen_view.dart';
 
 import '../modules/auth/bindings/auth_binding.dart';
@@ -27,7 +28,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.AUTH,
-      page: () => const AuthView(),
+      page: () => SigninView(),
       binding: AuthBinding(),
     ),
   ];

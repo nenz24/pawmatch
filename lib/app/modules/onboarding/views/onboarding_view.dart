@@ -82,7 +82,7 @@ class OnboardingView extends GetView<OnboardingController> {
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                Get.toNamed('/auth');
+                Get.toNamed('/auth'); // Navigate to Sign In page
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlueAccent,
