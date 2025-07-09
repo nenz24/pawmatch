@@ -1,23 +1,15 @@
 import 'package:get/get.dart';
+import 'package:pawmatch/app/modules/home/views/menu.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
-
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
+    // Auto-navigate ke /home setelah delay
+    Future.delayed(const Duration(seconds: 3), () {
+      Get.offAll(MenuView());
+    });
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

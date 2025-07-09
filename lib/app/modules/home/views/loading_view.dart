@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({super.key}); // <-- ubah dari const ke non-const
+class LoadingView extends StatelessWidget {
+  LoadingView({super.key}); // <-- ubah dari const ke non-const
 
   final HomeController controller = Get.put(HomeController());
   @override

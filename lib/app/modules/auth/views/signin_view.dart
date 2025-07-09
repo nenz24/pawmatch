@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawmatch/app/modules/auth/controllers/auth_controller.dart';
+import 'package:pawmatch/app/modules/auth/services/auth_service.dart';
+import 'package:pawmatch/app/modules/auth/views/signup_view.dart';
 import 'package:pawmatch/app/modules/auth/widget/noaccount.dart';
 import 'package:pawmatch/app/modules/auth/widget/socalcard.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:get/get.dart';
+import 'package:pawmatch/app/modules/home/views/home_view.dart';
 
 class SigninView extends GetView {
   final box = GetStorage();
-  AuthController controller = Get.put(AuthController());
+  final _authController = Get.find<AuthController>();
+  AuthController controller =
+      Get.put(AuthController(authService: AuthService()));
   @override
   Widget build(BuildContext context) {
     if (box.read('dataRememberMe') != null) {
@@ -17,50 +22,80 @@ class SigninView extends GetView {
       controller.passwordController.text =
           box.read('dataRememberMe')['password'];
     }
-    return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
+    return Obx(() {
+      if (_authController.user != null) {
+        return HomeView();
+      }
+      return Scaffold(
           backgroundColor: Colors.white,
-          title: const Text(
-            'Sign In',
-            style: TextStyle(color: Colors.black),
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            title: const Text(
+              'Sign In',
+              style: TextStyle(color: Colors.black),
+            ),
+            centerTitle: true,
           ),
-          centerTitle: true,
-        ),
-        body: SafeArea(
-            child: SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 16,
-                ),
-                const Text(
-                  'Welcome Back!',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                const Text(
-                  'Sign In with your email and password \nor continue with social media',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Color(0xFF757575)),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                Form(
-                    child: Column(
-                  children: [
-                    TextFormField(
-                        controller: controller.emailController,
-                        onChanged: (email) {},
-                        onSaved: (email) {},
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                            hintText: 'Enter your email',
-                            labelText: 'Email',
+          body: SafeArea(
+              child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Text(
+                    'Welcome Back!',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  const Text(
+                    'Sign In with your email and password \nor continue with social media',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Color(0xFF757575)),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  Form(
+                      child: Column(
+                    children: [
+                      TextFormField(
+                          controller: controller.emailController,
+                          onChanged: (email) {},
+                          onSaved: (email) {},
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                              hintText: 'Enter your email',
+                              labelText: 'Email',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              hintStyle: const TextStyle(
+                                color: Color(0xFF757575),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 16,
+                              ),
+                              suffix: SvgPicture.string(mailIcon),
+                              border: authOutlineInputBorder,
+                              enabledBorder: authOutlineInputBorder,
+                              focusedBorder: authOutlineInputBorder.copyWith(
+                                  borderSide: const BorderSide(
+                                color: Colors.lightBlue,
+                              )))),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24),
+                        child: TextFormField(
+                          controller: controller.passwordController,
+                          onSaved: (password) {},
+                          onChanged: (password) {},
+                          obscureText: controller.isHidden.value,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your password',
+                            labelText: 'Password',
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             hintStyle: const TextStyle(
                               color: Color(0xFF757575),
@@ -69,110 +104,93 @@ class SigninView extends GetView {
                               horizontal: 24,
                               vertical: 16,
                             ),
-                            suffix: SvgPicture.string(mailIcon),
+                            suffix: SvgPicture.string(lockIcon),
                             border: authOutlineInputBorder,
                             enabledBorder: authOutlineInputBorder,
                             focusedBorder: authOutlineInputBorder.copyWith(
                                 borderSide: const BorderSide(
                               color: Colors.lightBlue,
-                            )))),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: TextFormField(
-                        controller: controller.passwordController,
-                        onSaved: (password) {},
-                        onChanged: (password) {},
-                        obscureText: controller.isHidden.value,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your password',
-                          labelText: 'Password',
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          hintStyle: const TextStyle(
-                            color: Color(0xFF757575),
+                            )),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 16,
-                          ),
-                          suffix: SvgPicture.string(lockIcon),
-                          border: authOutlineInputBorder,
-                          enabledBorder: authOutlineInputBorder,
-                          focusedBorder: authOutlineInputBorder.copyWith(
-                              borderSide: const BorderSide(
-                            color: Colors.lightBlue,
-                          )),
                         ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Obx(() => Checkbox(
-                                value: controller.rememberMe.value,
-                                onChanged: (value) =>
-                                    {controller.rememberMe.toggle()})),
-                            const Text(
-                              'Remember Me',
-                              style: TextStyle(color: Color(0xFF757575)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Obx(() => Checkbox(
+                                  value: controller.RememberMe.value,
+                                  onChanged: (value) =>
+                                      {controller.RememberMe.toggle()})),
+                              const Text(
+                                'Remember Me',
+                                style: TextStyle(color: Color(0xFF757575)),
+                              ),
+                            ],
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              // Navigate to forgot password page
+                            },
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(color: Colors.lightBlue),
                             ),
-                          ],
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // Navigate to forgot password page
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            _authController.login(
+                                controller.emailController.text,
+                                controller.passwordController.text);
                           },
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.lightBlue),
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Colors.lightBlue,
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size(double.infinity, 48),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16)),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.lightBlue,
-                          foregroundColor: Colors.white,
-                          minimumSize: const Size(double.infinity, 48),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                          ),
-                        ),
-                        child: const Text('Continue')),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SocalCard(
-                            icon: SvgPicture.string(googleIcon), press: () {}),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: SocalCard(
-                              icon: SvgPicture.string(facebookIcon),
+                          child: const Text('Continue')),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SocalCard(
+                              icon: SvgPicture.string(googleIcon),
                               press: () {}),
-                        ),
-                        SocalCard(
-                            icon: SvgPicture.string(twitterIcon), press: () {}),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const NoAccountText()
-                  ],
-                ))
-              ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: SocalCard(
+                                icon: SvgPicture.string(facebookIcon),
+                                press: () {}),
+                          ),
+                          SocalCard(
+                              icon: SvgPicture.string(twitterIcon),
+                              press: () {}),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      NoAccountText()
+                    ],
+                  ))
+                ],
+              ),
             ),
-          ),
-        )));
+          )));
+    });
   }
 }
 

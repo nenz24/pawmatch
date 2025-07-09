@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "338097140484",
+    "project_id": "pawmatch-347f4",
+    "storage_bucket": "pawmatch-347f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338097140484:android:3481f81a2630509bec9651",
+        "android_client_info": {
+          "package_name": "com.danca.pawmatch_mobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338097140484-lrr67slc7g729ktk6mdpophtch51vsvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvW2FbFQ8h3HwwIhtJAwzqz6Ea3Pl5C5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338097140484-lrr67slc7g729ktk6mdpophtch51vsvb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
