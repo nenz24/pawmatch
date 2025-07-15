@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pawmatch/app/modules/auth/bindings/auth_binding.dart';
 import 'package:pawmatch/app/modules/auth/controllers/auth_controller.dart';
 import 'package:pawmatch/app/modules/auth/services/auth_service.dart';
+import 'package:pawmatch/app/modules/home/controllers/petfinder_controller.dart';
 import 'package:pawmatch/firebase_options.dart';
 
 import 'app/routes/app_pages.dart';
@@ -17,6 +18,7 @@ void main() async {
   );
   await AuthBinding().dependencies();
   Get.put(AuthController(authService: AuthService()));
+
   runApp(
     GetMaterialApp(
       title: "Application",

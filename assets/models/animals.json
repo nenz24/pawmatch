@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "name": "Animal 1",
+  "species": "Cat",
+  "breed": "Siamese",
+  "age": 6,
+  "gender": "Female",
+  "description": "Hewan penyelamatan butuh rumah.",
+  "image_url": "https://placekitten.com/300/300",
+  "status": "pending",
+  "shelter": 2
+}

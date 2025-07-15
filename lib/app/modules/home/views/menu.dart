@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-// TODO: add flutter_svg to pubspec.yaml
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawmatch/app/modules/home/controllers/home_controller.dart';
+import 'package:pawmatch/app/modules/home/models/petfinder_model.dart'
+    as models;
+import 'package:pawmatch/app/modules/home/views/Profile.dart';
 
-class MenuView extends GetView<HomeController> {
-  const MenuView({super.key});
+class FirstView extends GetView<HomeController> {
+  const FirstView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -14,9 +17,8 @@ class MenuView extends GetView<HomeController> {
           padding: EdgeInsets.symmetric(vertical: 16),
           child: Column(
             children: [
-              HomeHeader(),
               DiscountBanner(),
-              Categories(),
+              CategoryGrid(),
               SpecialOffers(),
               SizedBox(height: 20),
               PopularProducts(),
@@ -29,238 +31,91 @@ class MenuView extends GetView<HomeController> {
   }
 }
 
-class HomeHeader extends StatelessWidget {
-  const HomeHeader({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Expanded(child: SearchField()),
-          const SizedBox(width: 16),
-          IconBtnWithCounter(
-            // numOfitem: 3,
-            svgSrc: cartIcon,
-            press: () {},
-          ),
-          const SizedBox(width: 8),
-          IconBtnWithCounter(
-            svgSrc: bellIcon,
-            numOfitem: 3,
-            press: () {},
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class SearchField extends StatelessWidget {
-  const SearchField({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      child: TextFormField(
-        onChanged: (value) {},
-        decoration: InputDecoration(
-          filled: true,
-          hintStyle: const TextStyle(color: Color(0xFF757575)),
-          fillColor: const Color(0xFF979797).withOpacity(0.1),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            borderSide: BorderSide.none,
-          ),
-          hintText: "Search product",
-          prefixIcon: const Icon(Icons.search),
-        ),
-      ),
-    );
-  }
-}
-
-class IconBtnWithCounter extends StatelessWidget {
-  const IconBtnWithCounter({
-    Key? key,
-    required this.svgSrc,
-    this.numOfitem = 0,
-    required this.press,
-  }) : super(key: key);
-
-  final String svgSrc;
-  final int numOfitem;
-  final GestureTapCallback press;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(100),
-      onTap: press,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            height: 46,
-            width: 46,
-            decoration: BoxDecoration(
-              color: const Color(0xFF979797).withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: SvgPicture.string(svgSrc),
-          ),
-          if (numOfitem != 0)
-            Positioned(
-              top: -3,
-              right: 0,
-              child: Container(
-                height: 20,
-                width: 20,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFF4848),
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 1.5, color: Colors.white),
-                ),
-                child: Center(
-                  child: Text(
-                    "$numOfitem",
-                    style: const TextStyle(
-                      fontSize: 12,
-                      height: 1,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            )
-        ],
-      ),
-    );
-  }
-}
-
 class DiscountBanner extends StatelessWidget {
-  const DiscountBanner({
-    Key? key,
-  }) : super(key: key);
+  const DiscountBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 16,
-      ),
+      padding: const EdgeInsets.all(12),
+      width: double.infinity,
       decoration: BoxDecoration(
         color: const Color(0xFF4A3298),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
       ),
-      child: const Text.rich(
-        TextSpan(
-          style: TextStyle(color: Colors.white),
-          children: [
-            TextSpan(text: "A Summer Surpise\n"),
-            TextSpan(
-              text: "Cashback 20%",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: AspectRatio(
+          aspectRatio: 2.5,
+          child: Image.asset(
+            "assets/images/header.png",
+            fit: BoxFit.fill,
+          ),
         ),
       ),
     );
   }
 }
 
-class Categories extends StatelessWidget {
-  const Categories({super.key});
+class CategoryGrid extends StatelessWidget {
+  const CategoryGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> categories = [
-      {"icon": flashIcon, "text": "Flash Deal"},
-      {"icon": billIcon, "text": "Bill"},
-      {"icon": gameIcon, "text": "Game"},
-      {"icon": giftIcon, "text": "Daily Gift"},
-      {"icon": discoverIcon, "text": "More"},
+    final List<Map<String, String>> categories = [
+      {"icon": "assets/images/dog.png", "text": "Anjing"},
+      {"icon": "assets/images/bird.png", "text": "Burung"},
+      {"icon": "assets/images/cat.png", "text": "Kucing"},
+      {"icon": "assets/images/turtle.png", "text": "Kura-kura"},
+      {"icon": "assets/images/paw.png", "text": "Semua"},
     ];
+
     return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(
-          categories.length,
-          (index) => CategoryCard(
-            icon: categories[index]["icon"],
-            text: categories[index]["text"],
-            press: () {},
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CategoryCard extends StatelessWidget {
-  const CategoryCard({
-    Key? key,
-    required this.icon,
-    required this.text,
-    required this.press,
-  }) : super(key: key);
-
-  final String icon, text;
-  final GestureTapCallback press;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: press,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            height: 56,
-            width: 56,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFECDF),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: SvgPicture.string(icon),
-          ),
-          const SizedBox(height: 4),
-          Text(text, textAlign: TextAlign.center)
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: GridView.count(
+        crossAxisCount: 5,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        children: categories.map((category) {
+          return Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 5,
+                    )
+                  ],
+                ),
+                child: Image.asset(
+                  category["icon"]!,
+                  width: 36,
+                  height: 36,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                category["text"]!,
+                style: const TextStyle(fontSize: 12),
+              )
+            ],
+          );
+        }).toList(),
       ),
     );
   }
 }
 
 class SpecialOffers extends StatelessWidget {
-  const SpecialOffers({
-    Key? key,
-  }) : super(key: key);
+  const SpecialOffers({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -278,14 +133,14 @@ class SpecialOffers extends StatelessWidget {
           child: Row(
             children: [
               SpecialOfferCard(
-                image: "https://i.postimg.cc/yY2bNrmd/Image-Banner-2.png",
-                category: "Smartphone",
+                image: "assets/images/offer.png",
+                category: "Dog",
                 numOfBrands: 18,
                 press: () {},
               ),
               SpecialOfferCard(
-                image: "https://i.postimg.cc/BQjz4G1k/Image-Banner-3.png",
-                category: "Fashion",
+                image: "assets/images/offer.png",
+                category: "Cat",
                 numOfBrands: 24,
                 press: () {},
               ),
@@ -299,17 +154,17 @@ class SpecialOffers extends StatelessWidget {
 }
 
 class SpecialOfferCard extends StatelessWidget {
+  final String category, image;
+  final int numOfBrands;
+  final GestureTapCallback press;
+
   const SpecialOfferCard({
-    Key? key,
+    super.key,
     required this.category,
     required this.image,
     required this.numOfBrands,
     required this.press,
-  }) : super(key: key);
-
-  final String category, image;
-  final int numOfBrands;
-  final GestureTapCallback press;
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -324,9 +179,11 @@ class SpecialOfferCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
-                Image.network(
+                Image.asset(
                   image,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
+                  height: 242,
+                  width: 300,
                 ),
                 Container(
                   decoration: const BoxDecoration(
@@ -343,10 +200,8 @@ class SpecialOfferCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Text.rich(
                     TextSpan(
                       style: const TextStyle(color: Colors.white),
@@ -358,7 +213,7 @@ class SpecialOfferCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TextSpan(text: "$numOfBrands Brands")
+                        TextSpan(text: "$numOfBrands Animals"),
                       ],
                     ),
                   ),
@@ -372,15 +227,127 @@ class SpecialOfferCard extends StatelessWidget {
   }
 }
 
-class SectionTitle extends StatelessWidget {
-  const SectionTitle({
-    Key? key,
-    required this.title,
-    required this.press,
-  }) : super(key: key);
+class PopularProducts extends GetView<HomeController> {
+  const PopularProducts({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SectionTitle(title: "Popular Animals", press: () {}),
+        ),
+        const SizedBox(height: 8),
+        Obx(() {
+          if (controller.animals.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          return SizedBox(
+            height: 220,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.animals.length,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemBuilder: (context, index) {
+                final animal = controller.animals[index];
+                return Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: ProductCard(
+                    animal: animal,
+                    onPress: () {},
+                  ),
+                );
+              },
+            ),
+          );
+        }),
+      ],
+    );
+  }
+}
+
+class ProductCard extends StatelessWidget {
+  final models.Animal animal;
+  final VoidCallback onPress;
+
+  const ProductCard({
+    super.key,
+    required this.animal,
+    required this.onPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final imageUrl = (animal.photos != null && animal.photos!.isNotEmpty)
+        ? animal.photos!.first.medium ?? 'https://via.placeholder.com/150'
+        : 'https://via.placeholder.com/150';
+
+    return GestureDetector(
+      onTap: onPress,
+      child: Container(
+        width: 160,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [BoxShadow(blurRadius: 6, color: Colors.black12)],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.network(
+                imageUrl,
+                width: 160,
+                height: 120,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  width: 160,
+                  height: 120,
+                  color: Colors.grey[300],
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.image_not_supported),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                animal.name ?? 'Unknown',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                animal.breeds?.primary ?? 'Unknown',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
   final String title;
   final GestureTapCallback press;
+
+  const SectionTitle({super.key, required this.title, required this.press});
 
   @override
   Widget build(BuildContext context) {
@@ -404,209 +371,6 @@ class SectionTitle extends StatelessWidget {
     );
   }
 }
-
-class PopularProducts extends StatelessWidget {
-  const PopularProducts({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SectionTitle(
-            title: "Popular Products",
-            press: () {},
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              ...List.generate(
-                demoProducts.length,
-                (index) {
-                  if (demoProducts[index].isPopular) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: ProductCard(
-                        product: demoProducts[index],
-                        onPress: () {},
-                      ),
-                    );
-                  }
-
-                  return const SizedBox
-                      .shrink(); // here by default width and height is 0
-                },
-              ),
-              const SizedBox(width: 20),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class ProductCard extends StatelessWidget {
-  const ProductCard({
-    Key? key,
-    this.width = 140,
-    this.aspectRetio = 1.02,
-    required this.product,
-    required this.onPress,
-  }) : super(key: key);
-
-  final double width, aspectRetio;
-  final Product product;
-  final VoidCallback onPress;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: GestureDetector(
-        onTap: onPress,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AspectRatio(
-              aspectRatio: 1.02,
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF979797).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Image.network(product.images[0]),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              product.title,
-              style: Theme.of(context).textTheme.bodyMedium,
-              maxLines: 2,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "\$${product.price}",
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFFF7643),
-                  ),
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      color: product.isFavourite
-                          ? const Color(0xFFFF7643).withOpacity(0.15)
-                          : const Color(0xFF979797).withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: SvgPicture.string(
-                      heartIcon,
-                      colorFilter: ColorFilter.mode(
-                          product.isFavourite
-                              ? const Color(0xFFFF4848)
-                              : const Color(0xFFDBDEE4),
-                          BlendMode.srcIn),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class Product {
-  final int id;
-  final String title, description;
-  final List<String> images;
-  final List<Color> colors;
-  final double rating, price;
-  final bool isFavourite, isPopular;
-
-  Product({
-    required this.id,
-    required this.images,
-    required this.colors,
-    this.rating = 0.0,
-    this.isFavourite = false,
-    this.isPopular = false,
-    required this.title,
-    required this.price,
-    required this.description,
-  });
-}
-
-// Our demo Products
-
-List<Product> demoProducts = [
-  Product(
-    id: 1,
-    images: ["https://i.postimg.cc/c19zpJ6f/Image-Popular-Product-1.png"],
-    colors: [
-      const Color(0xFFF6625E),
-      const Color(0xFF836DB8),
-      const Color(0xFFDECB9C),
-      Colors.white,
-    ],
-    title: "Wireless Controller for PS4™",
-    price: 64.99,
-    description: description,
-    rating: 4.8,
-    isFavourite: true,
-    isPopular: true,
-  ),
-  Product(
-    id: 2,
-    images: [
-      "https://i.postimg.cc/CxD6nH74/Image-Popular-Product-2.png",
-    ],
-    colors: [
-      const Color(0xFFF6625E),
-      const Color(0xFF836DB8),
-      const Color(0xFFDECB9C),
-      Colors.white,
-    ],
-    title: "Nike Sport White - Man Pant",
-    price: 50.5,
-    description: description,
-    rating: 4.1,
-    isPopular: true,
-  ),
-  Product(
-    id: 3,
-    images: [
-      "https://i.postimg.cc/1XjYwvbv/glap.png",
-    ],
-    colors: [
-      const Color(0xFFF6625E),
-      const Color(0xFF836DB8),
-      const Color(0xFFDECB9C),
-      Colors.white,
-    ],
-    title: "Gloves XC Omega - Polygon",
-    price: 36.55,
-    description: description,
-    rating: 4.1,
-    isFavourite: true,
-    isPopular: true,
-  ),
-];
 
 const heartIcon =
     '''<svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
